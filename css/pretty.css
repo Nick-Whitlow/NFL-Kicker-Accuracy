@@ -6,7 +6,6 @@
 {
     display:none;
 }
-
 #tooltip
 {
     position:absolute;
@@ -18,12 +17,10 @@
     box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
     pointer-events:none;
 }
-
 #tooltip2.hidden2
 {
     display:none;
 }
-
 #tooltip2
 {
     position:absolute;
@@ -35,12 +32,25 @@
     box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
     pointer-events:none;
 }
-
+#tooltip3.hidden3
+{
+    display:none;
+}
+#tooltip3
+{
+    position:absolute;
+    width:120px;
+    height:auto;
+    padding:10px;
+    background-color:white;
+    border-radius:10px;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+    pointer-events:none;
+}
 #attempted
 {
   font-size:20px;  
 }
-
 #made
 {
     font-size:20px;
@@ -53,4 +63,32 @@
 #made2
 {
     font-size:20px;
+}
+#scatterPlot
+{
+    background-color: tan;
+}
+#scatterPlot .title 
+{
+    font-size: 40;
+}
+#scatterPlot .labels 
+{
+    font-size: 20;
+}
+#barchart svg
+{
+    background-color: darkgray
+}
+#barchart .title 
+{
+    font-size: 40;
+}
+#fieldGoals svg
+{
+    background-color: beige
+}
+#fieldGoal .title
+{
+    font-size: 40;
 }

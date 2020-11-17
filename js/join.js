@@ -8,13 +8,7 @@ var svg = d3.select("#barchart")
 .append("g")
 .attr("transform", "translate("+margin.left+","+margin.top+")");
 
- var xScale = d3.scaleBand()
-        .domain([0,100])
-        .range([0,width])
 
-    var yScale = d3.scaleLinear()
-        .domain([0,1])
-        .range([height,0])
 
        var initGraph1 =function(extraPoint){
     var subgroups = extraPoint.columns.slice(0)
@@ -25,6 +19,17 @@ console.log("valuegggs", subgroups);
 console.log("values3", extraPoint);
            
            
+           
+  var xScale = d3.scaleBand()
+        .domain([0,400])
+        .range([0,width])
+
+    var yScale = d3.scaleLinear()
+        .domain([0,400])
+        .range([height,0])
+    
+    
+    
 //name           
 var namesValus = [];
           
@@ -53,19 +58,11 @@ svg.append("g")
            
 
      
-           
-//           var quizMeans = function(penguin){
-//    //array of quiz grades
-//   var studentQuiz  = penguin.quizes.map(function(quiz){
-//        return quiz.grade; 
-//    })
-//    return d3.mean(studentQuiz).toFixed(2);
-//}
-//           
+            
            
 //add y
 var y = d3.scaleLinear()
-.domain([0,100])
+.domain([0,400])
 .range([height, 0])
 svg.append("g")
 .call(d3.axisLeft(y));
@@ -77,10 +74,10 @@ svg.append("g")
 .enter()
 .append("rect")
 .attr("width", function(d){return 60})
-.attr("height", function(d){return parseInt(d.extraPointMade);})
+.attr("height", function(d){return yScale(parseInt(d.extraPointMade));})
 .attr("fill","green")
 .attr("x", function(d,i){return i*75.6})
-.attr("y", function(d){return 0})
+.attr('y', function(d){ return (height - parseInt(y(d.extraPointMade))); })
            
            
 //tooltip
@@ -119,14 +116,14 @@ svg.append("g")
     .classed("title", true)
     .attr("text-anchor", "middle")
     .attr("x", margin.left+(width/2))
-    .attr("y", margin.top)
+    .attr("y", margin.top-5)
     
     labels.append("text")
     .text("Player")
     .classed("label", true)
     .attr("text-anchor", "middle")
     .attr("x", margin.left+width/2)
-    .attr("y", height+(margin.bottom+margin.top))
+    .attr("y", height+(margin.bottom+margin.top-5))
     
     labels.append("g")
     .attr("transform", "translate(20,"+(margin.top+(height/2))+")")
@@ -169,7 +166,15 @@ var groups = d3.map(fieldGoal, function(d){return(d.group)}).keys()
 console.log("valuegggs", subgroups);
 console.log("values3", fieldGoal);
            
-           
+            var xScale = d3.scaleBand()
+        .domain([0,100])
+        .range([0,width])
+
+    var yScale = d3.scaleLinear()
+        .domain([0,200])
+        .range([height,0])
+    
+    
            
 var namesValus = [];
           
@@ -197,7 +202,7 @@ svg2.append("g")
 
 //add y
 var y = d3.scaleLinear()
-.domain([0,100])
+.domain([0,200])
 .range([height, 0])
 svg2.append("g")
 .call(d3.axisLeft(y));
@@ -209,10 +214,10 @@ svg2.append("g")
 .enter()
 .append("rect")
 .attr("width", function(d){return 60})
-.attr("height", function(d){return parseInt(d.fieldGoalMade);})
+.attr("height", function(d){return yScale(parseInt(d.fieldGoalMade));})
 .attr("fill","green")
 .attr("x", function(d,i){return i*75.6})
-.attr("Y", function(d){return 0})
+.attr('y', function(d){ return (height - parseInt(y(d.fieldGoalMade))); })
          
     //tooltip
 .on("mouseenter" ,function(fieldGoal)
@@ -250,15 +255,15 @@ var labels = d3.select("#fieldGoals svg")
     .text("NFL Field Goal Accuracy 2010-2016")
     .classed("title", true)
     .attr("text-anchor", "middle")
-    .attr("x", margin.left + margin.left + margin.left)
-    .attr("y", margin.top)
+    .attr("x", margin.left+width/2)
+    .attr("y", margin.top-5)
     
     labels.append("text")
     .text("Player")
     .classed("label", true)
     .attr("text-anchor", "middle")
     .attr("x", margin.left+width/2)
-    .attr("y", height+(margin.bottom+margin.top))
+    .attr("y", height+(margin.bottom+margin.top-5))
     
     labels.append("g")
     .attr("transform", "translate(20,"+(margin.top+(height/2))+")")
@@ -272,8 +277,131 @@ var labels = d3.select("#fieldGoals svg")
          
      }
        
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     //start of my scatter plot graph 
+   initGraph3 = function(percentages){
+     var margins = {top: 60, bottom: 40, right:40, left: 60},
+    width = 500 - margins.left - margins.right,
+    height = 500 - margins.top - margins.bottom;
+       
+var svg3 = d3.select("#scatterPlot")
+  .append("svg")
+    .attr("width", width + margins.left + margins.right)
+    .attr("height", height + margins.top + margins.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margins.left + "," + margins.top + ")");
+       
+       //add x axis
+     var x = d3.scaleLinear()
+    .domain([0, 100])
+    .range([ 0, width ]);
+  svg3.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+       
+       // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, 100])
+    .range([ height, 0]);
+  svg3.append("g")
+    .call(d3.axisLeft(y));           
+    
+       //add dots
+    svg3.append('g')
+    .selectAll("dot")
+    .data(percentages.filter(function(d,i){return i<50})) // the .filter part is just to keep a few dots on the chart, not all of them
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d.extraPointPercentage); } )
+      .attr("cy", function (d) { return y(d.fieldGoalPercentage); } )
+      .attr("r", 7)
+      .style("fill", "black")
+      .style("opacity", 1)
+      .style("stroke", "green")
+    //tooltip
+       
+.on("mouseenter" ,function(percentages)
+      {
+        
+      var xPos = d3.event.pageX;
+      var yPos = d3.event.pageY;
+      
+        d3.select("#tooltip3")
+        .classed("hidden3",false)
+        .style("top",yPos+"px")
+        .style("left",xPos+"px")
+    
+    d3.select("#fieldGoal")
+        .text(percentages.fieldGoalPercentage+"% on Field Goals");
+        
+        d3.select("#extraPoint")
+        .text(percentages.extraPointPercentage+"% on Extra Points");
+        
+        d3.select("#name")
+        .text("Player:"+" "+percentages.Name)
+        
+        
+      })//tool tip off
+    .on("mouseleave",function()
+    {
+        d3.select("#tooltip3")    
+        .classed("hidden3",true);
+    })   
 
+var labels = d3.select("#scatterPlot svg")
+    .append("g")
+    .classed("labels", true);
+    
+    labels.append("text")
+    .text("NFL Percentages 2016")
+    .classed("title", true)
+    .attr("text-anchor", "middle")
+    .attr("x", margins.left+width/2)
+    .attr("y",  margins.top-10)
+    
+    labels.append("text")
+    .text("Extra Points")
+    .classed("label", true)
+    .attr("text-anchor", "middle")
+    .attr("x", margins.left+width/2)
+    .attr("y",height+(margins.bottom+margins.top-5))
+    
+    labels.append("g")
+    .attr("transform", "translate(20,"+(margins.top+(height/2))+")")
+    .append("text")
+    .text("Field Goals")
+    .classed("label", true)
+    .attr("text-anchor", "middle")
+    .attr("transform", "rotate(90)")
+       
+       
 
+     
+     
+   }
+     
+     
+     
 var succFCN = function(values)
 {
     console.log("values", values);
@@ -282,6 +410,7 @@ var succFCN = function(values)
     var percentages = values[2];
   initGraph1(extraPoint)
     initGraph2(fieldGoal)
+    initGraph3(percentages)
 }
 
 var failFCN = function(error)
