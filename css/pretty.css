@@ -84,11 +84,19 @@
 {
     font-size: 40;
 }
+#barchart .labels
+{
+    font-size: 30;
+}
 #fieldGoals svg
 {
     background-color: beige
 }
-#fieldGoal .title
+#fieldGoals .title
 {
     font-size: 40;
+}
+#fieldGoals .labels 
+{
+    font-size: 30
 }
