@@ -1,8 +1,353 @@
+//current best
+
+var margin = {top: 20, bottom: 10, right:30, left: 50},
+    width = 4000 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+var svg = d3.select("#barchart")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate("+margin.left+","+margin.top+")");
+
+       var initGraph1 =function(extraPoint){
+    var subgroups = extraPoint.columns.slice(0)
+    
+var groups = d3.map(extraPoint, function(d){return(d.group)}).keys()
+
+console.log("valuegggs", subgroups);
+console.log("values3", extraPoint);
+           
+           
+//name           
+var namesValus = [];
+          
+extraPoint.forEach(gettingName);
+
+           
+function gettingName(item, index) {
+  namesValus.push(item.Name) 
+}
+
+console.log("values4", namesValus);
+           
+//add X
+var x = d3.scaleBand()
+.domain(namesValus)
+.range([0,width])
+.padding([0.2])
+svg.append("g")
+.attr("tranform", "translate("+0+","+0+")")
+.attr("transform", "rotate(90)")
+.call(d3.axisTop(x));
+           console.log(height)
+
+//add y
+var y = d3.scaleLinear()
+.domain([0,100])
+.range([height, 0])
+svg.append("g")
+.call(d3.axisLeft(y));
+
+//show the bars
+svg.append("g")
+.selectAll("g")
+.data(extraPoint)
+.enter()
+.append("rect")
+.attr("width", function(d){return 60})
+.attr("height", function(d){return parseInt(d.extraPointMade);})
+.attr("fill","green")
+.attr("x", function(d,i){return i*75.6})
+.attr("Y", function(d){return 0})
+
+}
+       
+       
+       
+       
+       
+       
+//Start of my second graph
+       var svg2 = d3.select("#fieldGoals")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate("+margin.left+","+margin.top+")");
+
+       
+       
+     var initGraph2 =function(fieldGoal){
+    var subgroups = fieldGoal.columns.slice(0)
+    
+var groups = d3.map(fieldGoal, function(d){return(d.group)}).keys()
+
+console.log("valuegggs", subgroups);
+console.log("values3", fieldGoal);
+           
+           
+           
+var namesValus = [];
+          
+fieldGoal.forEach(gettingName);
+
+           
+function gettingName(item, index) {
+  namesValus.push(item.Name) 
+}
+
+console.log("values4", namesValus);
+           
+//add X
+var x = d3.scaleBand()
+.domain(namesValus)
+.range([0,width])
+.padding([0.2])
+svg2.append("g")
+.attr("tranform", "translate("+0+","+0+")")
+.call(d3.axisTop(x));
+           console.log(height)
+
+//add y
+var y = d3.scaleLinear()
+.domain([0,100])
+.range([height, 0])
+svg2.append("g")
+.call(d3.axisLeft(y));
+
+//show the bars
+svg2.append("g")
+.selectAll("g")
+.data(fieldGoal)
+.enter()
+.append("rect")
+.attr("width", function(d){return 60})
+.attr("height", function(d){return parseInt(d.fieldGoalMade);})
+.attr("fill","green")
+.attr("x", function(d,i){return i*75.6})
+.attr("Y", function(d){return 0})
+
+}   
+       
+
+
+var succFCN = function(values)
+{
+    console.log("values", values);
+    var extraPoint = values[0];
+    var fieldGoal = values[1];
+    var percentages = values[2];
+  initGraph1(extraPoint)
+    initGraph2(fieldGoal)
+}
+
+var failFCN = function(error)
+{
+    console.log("error", error);
+}
+
+
+var extraPointPromise = d3.csv("data/extraPoints.csv")
+var fieldGoalPromise = d3.csv("data/fieldGoals.csv")
+var percentagesPromise = d3.csv("data/percentages.csv")
+
+var promises = [extraPointPromise, fieldGoalPromise, percentagesPromise];
+
+Promise.all(promises)
+.then(succFCN, failFCN)
+
+
+
+//wong with attempted draw axis
+
+
+var margin = {top: 20, bottom: 10, right:30, left: 50},
+    width = 4000 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+var graph = {width, height};
+var svg = d3.select("#barchart")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate("+margin.left+","+margin.top+")");
+    
+
+       var initGraph1 =function(extraPoint){
+    var subgroups = extraPoint.columns.slice(0)
+    
+var groups = d3.map(extraPoint, function(d){return(d.group)}).keys()
+
+console.log("valuegggs", subgroups);
+console.log("values3", extraPoint);
+           
+           
+//name           
+var namesValus = [];
+          
+extraPoint.forEach(gettingName);
+
+           
+function gettingName(item, index) {
+  namesValus.push(item.Name) 
+}
+
+console.log("values4", namesValus);
+           
+var xScale = d3.scaleLinear()
+        .domain([0,namesValus])
+        .range([0,graph.width])
+
+    var yScale = d3.scaleLinear()
+        .domain([0,100])
+        .range([graph.height,0])
+    
+    
+var drawAxes = function(graph,margin,
+                        xScale,yScale)
+{
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale);
+    
+    var axes = d3.select("#barchart")
+    .append("g"); 
+    axes.append("g")
+    .attr("transform", "translate("+margin.left+","+(margin.top+graph.height)+")")
+    .call(xAxis);
+   
+    axes.append("g")
+    .attr("transform", "translate("+margin.left+","+(margin.top)+")")
+    .call(yAxis);
+    
+}
+//show the bars
+svg.append("g")
+.selectAll("g")
+.data(extraPoint)
+.enter()
+.append("rect")
+.attr("width", function(d){return 60})
+.attr("height", function(d){return parseInt(d.extraPointMade);})
+.attr("fill","green")
+.attr("x", function(d,i){return i*75.6})
+.attr("Y", function(d){return 0})
+
+    drawAxes(graph,margin,xScale,yScale)  ;     
+}
+       
+       
+       
+       
+       
+       
+//Start of my second graph
+       var svg2 = d3.select("#fieldGoals")
+.append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate("+margin.left+","+margin.top+")");
+
+       
+       
+     var initGraph2 =function(fieldGoal){
+    var subgroups = fieldGoal.columns.slice(0)
+    
+var groups = d3.map(fieldGoal, function(d){return(d.group)}).keys()
+
+console.log("valuegggs", subgroups);
+console.log("values3", fieldGoal);
+           
+           
+           
+var namesValus = [];
+          
+fieldGoal.forEach(gettingName);
+
+           
+function gettingName(item, index) {
+  namesValus.push(item.Name) 
+}
+
+console.log("values4", namesValus);
+           
+//add X
+var x = d3.scaleBand()
+.domain(namesValus)
+.range([0,width])
+.padding([0.2])
+svg2.append("g")
+.attr("tranform", "translate("+0+","+0+")")
+.call(d3.axisTop(x));
+           console.log(height)
+
+//add y
+var y = d3.scaleLinear()
+.domain([0,100])
+.range([height, 0])
+svg2.append("g")
+.call(d3.axisLeft(y));
+
+//show the bars
+svg2.append("g")
+.selectAll("g")
+.data(fieldGoal)
+.enter()
+.append("rect")
+.attr("width", function(d){return 60})
+.attr("height", function(d){return parseInt(d.fieldGoalMade);})
+.attr("fill","green")
+.attr("x", function(d,i){return i*75.6})
+.attr("Y", function(d){return 0})
+
+}   
+       
+
+
+var succFCN = function(values)
+{
+    console.log("values", values);
+    var extraPoint = values[0];
+    var fieldGoal = values[1];
+    var percentages = values[2];
+  initGraph1(extraPoint)
+    initGraph2(fieldGoal)
+}
+
+var failFCN = function(error)
+{
+    console.log("error", error);
+}
+
+
+var extraPointPromise = d3.csv("data/extraPoints.csv")
+var fieldGoalPromise = d3.csv("data/fieldGoals.csv")
+var percentagesPromise = d3.csv("data/percentages.csv")
+
+var promises = [extraPointPromise, fieldGoalPromise, percentagesPromise];
+
+Promise.all(promises)
+.then(succFCN, failFCN)
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//wrong
 var succFCN = function(values)
 {
     console.log("values", values);
