@@ -1,6 +1,19 @@
-var margin = {top: 40, bottom: 100, right:30, left: 70},
-    width = 4000 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom;
+d3.select("#leftText")
+.append("p")
+.append("text")
+.text("The bar chart above displays how many extra points were made from 2010-2016. HOVER over the bars to see how many were made and attmepted. The Scatter Plot shows in the 2016 season how accurate kickers were on both field goals and extra points.")
+
+d3.select("#rightText")
+.append("p")
+.append("text")
+.text("The bar chart above displays how many field goals were made from 2010-2016. HOVER over the bars to see how many were made and attmepted.")
+
+
+
+
+var margin = {top: 30, bottom: 100, right:30, left: 70};
+   var width = 700 - margin.left - margin.right;
+    var height = 450 - margin.top - margin.bottom;
 var svg = d3.select("#barchart")
 .append("svg")
 .attr("width", width + margin.left + margin.right)
@@ -13,7 +26,7 @@ var svg = d3.select("#barchart")
        var initGraph1 =function(extraPoint){
     var subgroups = extraPoint.columns.slice(0)
     
-var groups = d3.map(extraPoint, function(d){return(d.group)}).keys()
+//var groups = d3.map(extraPoint, function(d){return(d.group)}).keys()
 
 console.log("valuegggs", subgroups);
 console.log("values3", extraPoint);
@@ -21,12 +34,12 @@ console.log("values3", extraPoint);
            
            
   var xScale = d3.scaleBand()
-        .domain([0,400])
+        .domain([0,54])
         .range([0,width])
 
     var yScale = d3.scaleLinear()
         .domain([0,400])
-        .range([height,0])
+        .range([ 0, height])
     
     
     
@@ -46,13 +59,13 @@ console.log("values4", namesValus);
 var x = d3.scaleBand()
 .domain(namesValus)
 .range([0,width])
-.padding([0.2])
+.padding([-.2])
 svg.append("g")
     .attr("class", "text")
 .attr("transform", "translate("+(0)+","+(height)+")")
 .call(d3.axisBottom(x))
 .selectAll("text")
-.attr("transform", "translate(-10,0)rotate(-45)")
+.attr("transform", "translate(-12,5)rotate(-75)")
 .style("text-anchor", "end");
            console.log(height);
            
@@ -69,15 +82,15 @@ svg.append("g")
 
 //show the bars
 svg.append("g")
-.selectAll("g")
+.selectAll("rect")
 .data(extraPoint)
 .enter()
 .append("rect")
-.attr("width", function(d){return 60})
+.attr("width", function(d){return 8})
 .attr("height", function(d){return yScale(parseInt(d.extraPointMade));})
-.attr("fill","green")
-.attr("x", function(d,i){return i*75.6})
-.attr('y', function(d){ return (height - parseInt(y(d.extraPointMade))); })
+.attr("fill","black")
+.attr("x", function(d,i){return i*11.6})
+.attr('y', function(d){ return (height - parseInt(yScale(d.extraPointMade))); })
            
            
 //tooltip
@@ -112,7 +125,7 @@ svg.append("g")
     .classed("labels", true);
     
     labels.append("text")
-    .text("NFL Extra Point Accuracy 2010-2016")
+    .text("NFL Extra Points 2010-2016")
     .classed("title", true)
     .attr("text-anchor", "middle")
     .attr("x", margin.left+(width/2))
@@ -172,7 +185,7 @@ console.log("values3", fieldGoal);
 
     var yScale = d3.scaleLinear()
         .domain([0,200])
-        .range([height,0])
+        .range([0, height])
     
     
            
@@ -191,13 +204,13 @@ console.log("values4", namesValus);
 var x = d3.scaleBand()
 .domain(namesValus)
 .range([0,width])
-.padding([0.2])
+.padding([-.2])
 svg2.append("g")
 .attr("transform", "translate("+(0)+","+(height)+")")
          .attr("class", "text")
 .call(d3.axisBottom(x))
 .selectAll("text")
-.attr("transform", "translate(-10,0)rotate(-45)")
+.attr("transform", "translate(-12,5)rotate(-75)")
 .style("text-anchor", "end");           console.log(height)
 
 //add y
@@ -213,11 +226,11 @@ svg2.append("g")
 .data(fieldGoal)
 .enter()
 .append("rect")
-.attr("width", function(d){return 60})
+.attr("width", function(d){return 8})
 .attr("height", function(d){return yScale(parseInt(d.fieldGoalMade));})
-.attr("fill","green")
-.attr("x", function(d,i){return i*75.6})
-.attr('y', function(d){ return (height - parseInt(y(d.fieldGoalMade))); })
+.attr("fill","black")
+.attr("x", function(d,i){return i*11.6})
+.attr('y', function(d){ return (height - parseInt(yScale(d.fieldGoalMade))); })
          
     //tooltip
 .on("mouseenter" ,function(fieldGoal)
@@ -252,7 +265,7 @@ var labels = d3.select("#fieldGoals svg")
     .classed("labels", true);
     
     labels.append("text")
-    .text("NFL Field Goal Accuracy 2010-2016")
+    .text("NFL Field Goals 2010-2016")
     .classed("title", true)
     .attr("text-anchor", "middle")
     .attr("x", margin.left+width/2)
@@ -282,26 +295,12 @@ var labels = d3.select("#fieldGoals svg")
      
      
      
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
+    
      //start of my scatter plot graph 
    initGraph3 = function(percentages){
-     var margins = {top: 60, bottom: 40, right:40, left: 60},
-    width = 500 - margins.left - margins.right,
-    height = 500 - margins.top - margins.bottom;
+     var margins = {top: 35, bottom: 40, right:50, left: 60},
+    width = 750 - margins.left - margins.right,
+    height = 300 - margins.top - margins.bottom;
        
 var svg3 = d3.select("#scatterPlot")
   .append("svg")
